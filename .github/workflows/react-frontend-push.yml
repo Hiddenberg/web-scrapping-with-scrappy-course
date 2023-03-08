@@ -23,10 +23,13 @@ jobs:
       matrix:
         node-version: [14.x, 16.x, 18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    
+    defaults:
+      run:
+        working-directory: ./platzi-inteligence-frontend
 
     steps:
     - uses: actions/checkout@v3
-    - working-directory: ./platzi-inteligence-frontend
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
