@@ -34,6 +34,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: platzi-inteligence-frontend/package-lock.json
     - name: Install Dependencies
       run: npm install
     - name: Build App
