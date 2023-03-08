@@ -24,13 +24,17 @@ class SpiderCIA(scrapy.Spider):
    def parse_link(self, response, **kwargs):
       XPATH_TITLE = '//h1[@class="documentFirstHeading"]/text()'
       XPATH_BODY = '//div[contains(@class, "field-item")]/p[not(child::strong)]//text()'
+      XPATH_IMAGE = '//div[@class="field-items"]//p//img[1]/@src'
 
       link = kwargs['url']
       title = response.xpath(XPATH_TITLE).get()
+      image = response.xpath(XPATH_IMAGE).get()
+      image_url = "https://www.cia.gov" + image if image else None
       paragraphs = response.xpath(XPATH_BODY).getall()
 
       yield {
          'url': link,
          'title': title,
+         'image': image_url,
          'body': paragraphs
       }
