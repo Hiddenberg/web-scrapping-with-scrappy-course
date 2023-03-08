@@ -1,4 +1,4 @@
-import "../css/header.css"
+import "../css/Header.css"
 function Header() {
    return (
       <header className="header"><h1>Platzi Inteligence Project</h1></header>
