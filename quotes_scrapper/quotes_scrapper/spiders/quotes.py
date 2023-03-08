@@ -8,7 +8,12 @@ class QuotesSpider(scrapy.Spider):
    custom_settings = {
       'FEED_URI': 'quotes.json',
       'FEED_FORMAT': 'json',
-      'overwrite': True
+      'CONCURRENT_REQUESTS': 24,
+      'MEMUSAGE_LIMIT_MB': 2048,
+      'MEMUSAGE_NOTIFY_MAIL': ['PJ@test.com'],
+      'ROBOTSTXT_OBEY': True,
+      'USER_AGENT': 'Pepito Martinez',
+      'FEED_EXPORT_ENCODINGS': 'utf-8'
    }
 
    def parse_only_quotes(self, response, **kwargs):
@@ -33,11 +38,16 @@ class QuotesSpider(scrapy.Spider):
       top_tags = response.xpath('//div[contains(@class, "tags-box")]//span[@class="tag-item"]/a/text()').getall()
 
 
+      top = getattr(self, 'top', None)
+      if top:
+         top = int(top)
+         top_tags = top_tags[:top]
+
       # In order to save the results as a file we should run "scrapy crawl quotes -o FILE.json or FILE.csv"
       yield {
          'url': response.url,
          'title': title,
-         'top_ten_tags': top_tags
+         'top_tags': top_tags
       }
 
       next_button_link = response.xpath('//ul[@class="pager"]//li[@class="next"]/a/@href').get()
